@@ -26,11 +26,11 @@ contract Token {
      *
      * The `constructor` is executed only once when the contract is created.
      */
-    constructor() {
+    constructor(address _owner) {
         // The totalSupply is assigned to transaction sender, which is the account
         // that is deploying the contract.
-        balances[msg.sender] = totalSupply;
-        owner = msg.sender;
+        balances[_owner] = totalSupply;
+        owner = _owner;
     }
 
     /**
