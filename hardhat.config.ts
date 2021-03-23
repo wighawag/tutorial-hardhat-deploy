@@ -9,5 +9,8 @@ const config: HardhatUserConfig = {
   namedAccounts: {
     deployer: 0,
   },
+  paths: {
+    sources: 'src',
+  },
 };
 export default config;
