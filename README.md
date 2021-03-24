@@ -70,6 +70,7 @@ npm install npm --global # Upgrade npm to the latest version
 
 You need to follow the [same installation instructions](#windows) as before but choose a different version. You can check the list of all available versions [here](https://nodejs.org/en/download/releases/).
 
+## Installing yarn
 
 For this tutorial we are going to use [yarn](yarnpkg.com)
 
