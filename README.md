@@ -487,7 +487,7 @@ Since we already perform the deploy script, we can easily access the deployed co
 const ownerBalance = await Token.balanceOf(tokenOwner);
 ```
 
-We can call our contract methods on `hardhatToken` and use them to get the balance of the owner account by calling `balanceOf()`.
+We can call our contract methods on `Token` and use them to get the balance of the owner account by calling `balanceOf()`.
 
 ```typescript
 const supply = await Token.totalSupply();
