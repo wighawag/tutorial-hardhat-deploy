@@ -571,13 +571,12 @@ export async function setupUser<T extends {[contractName: string]: Contract}>(
 
 ```
 
-This approach will allow you to have succint and easy to read tests as you can see in the following example.
+This approach will allow you to have succinct and easy to read tests as you can see from the following example.
 
-
-Here is the test suite, overwrite Test.test.ts with its content :
+Here is the test suite. Overwrite Test.test.ts with the following content:
 
 ```typescript
-// We import Chai to use its asserting functions here.
+// We import Chai to use its assertion functions here.
 import {expect} from "./chai-setup";
 
 // we import our utilities
@@ -586,20 +585,22 @@ import {setupUsers, setupUser} from './utils';
 // We import the hardhat environment field we are planning to use
 import {ethers, deployments, getNamedAccounts, getUnnamedAccounts} from 'hardhat';
 
-// we create a stup function that can be called by every test and setup variable for easy to read tests
+// we create a setup function that can be called by every test and setup variable for easy to read tests
 async function setup () {
-  // it first ensure the deployment is executed and reset (use of evm_snaphost for fast test)
+  // it first ensures the deployment is executed and reset (use of evm_snapshot for faster tests)
   await deployments.fixture(["Token"]);
 
-  // we get an instantiated contract in teh form of a ethers.js Contract instance:
+  // we get an instantiated contract in the form of a ethers.js Contract instance:
   const contracts = {
     Token: (await ethers.getContract('Token')),
   };
 
   // we get the tokenOwner
   const {tokenOwner} = await getNamedAccounts();
-  // get fet unnammedAccounts (which are basically all accounts not named in the config, useful for tests as you can be sure they do not have been given token for example)
-  // we then use the utilities function to generate user object/
+  
+  // Get the unnammedAccounts (which are basically all accounts not named in the config, 
+  // This is useful for tests as you can be sure they have noy been given tokens for example)
+  // We then use the utilities function to generate user objects
   // These object allow you to write things like `users[0].Token.transfer(....)`
   const users = await setupUsers(await getUnnamedAccounts(), contracts);
   // finally we return the whole object (including the tokenOwner setup as a User object)
@@ -702,9 +703,9 @@ describe("Token contract", function() {
 
 ```
 
-This is what the output of `yarn hardhat test` should look like against the full test suite:
+This is what the output of `yarn hardhat test` should look like after running the full test suite:
 
-```
+```shell
 $ yarn hardhat test
 
   Token contract
@@ -721,8 +722,6 @@ $ yarn hardhat test
 ```
 
 Keep in mind that when you run `yarn hardhat test`, your contracts will be compiled if they've changed since the last time you ran your tests.
-
-
 
 
 # 6. Debugging with Hardhat Network
@@ -808,7 +807,7 @@ yarn hardhat --network <network-name> deploy
 ```
 
 ## Deploying to remote networks
-To deploy to a remote network such as mainnet or any testnet, you need to add a `network` entry to your `hardhat.config.js` file. We’ll use Rinkeby for this example, but you can add any network similarly.
+To deploy to a remote network such as mainnet or any testnet, you need to add a `network` entry to your `hardhat.config.js` file. We’ll use Rinkeby for this example, but you can add any network.
 
 To make it easier to handle the private keys and network configuration we create a new folder at the root of your project `utils`
 
