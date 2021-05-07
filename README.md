@@ -538,9 +538,9 @@ describe("Token contract", function() {
 Now that we've covered the basics you'll need for testing your contracts, here's a full test suite for the token with a lot of additional information about Mocha and how to structure your tests. We recommend reading through.
 
 
-But first we add some utility functions that we will use in that test suite.
+But first we add some utility functions that we will use in the test suite.
 
-create a folder `utils` in the `test` folder and create a file `index.ts` in it with the following content :
+Create a folder called `utils` in the `test` folder and it it, create a file called `index.ts` with the following content:
 
 ```typescript
 import {Contract} from 'ethers';
@@ -571,10 +571,10 @@ export async function setupUser<T extends {[contractName: string]: Contract}>(
 
 ```
 
-This allow you to have succint and easy to read test as you ll see.
+This approach will allow you to have succint and easy to read tests as you can see in the following example.
 
 
-Here is the testsuite, overwrite Test.test.ts with its content :
+Here is the test suite, overwrite Test.test.ts with its content :
 
 ```typescript
 // We import Chai to use its asserting functions here.
