@@ -303,18 +303,19 @@ Compiling 1 file with 0.7.3
 Compilation finished successfully
 ```
 
-The contract has been successfully compiled and it's ready to be used.
+The contract has been successfully compiled and is ready to be used.
 
-# 4. Deployments Scripts
+# 4. Deployment Scripts
 
-Before being able to test or deploy contract, you can setup the deployment that can then be used both in test and when you are ready to deploy.
-This allow you to focus on what the contract will be in their final form, setup their parameters and dependencies and ensure your test are testing what will be deployed.
-This also remove the need to duplicate the deployment procedures
+Before you will be able to test or deploy your contract, you must set up the deployment process that can then be used both in testing as well as deployment to various live networks.
+This allow you to focus on what the contracts will be in their final form, setup their parameters and dependencies, and ensure your tests are running against the exact code that will be deployed.
 
-## Writing deployments scripts
-Create a new directory called `deploy` inside our project root directory and create a new file called `001_deploy_token.ts`.
+This also removes the need to duplicate the deployment procedures.
 
-Let's start with the code below. We'll explain it next, but for now paste this into `001_deploy_token.ts`:
+## Writing deployment scripts
+Create a new directory called `deploy` in the project root, and in that directory create a new file called `001_deploy_token.ts`.
+
+Let's start with the code below. We'll explain it soon, but for now paste this code into `001_deploy_token.ts`:
 
 ```typescript
 import {HardhatRuntimeEnvironment} from 'hardhat/types';
@@ -337,15 +338,15 @@ func.tags = ['Token'];
 
 ```
 
-Notice the mentioned of `getNamedAccounts` ?
+Notice the mentione of `getNamedAccounts`?
 
-the plugin `hardhat-deploy` allows you to name your accounts. Here there are 2 named accounts:
-- deployer that will is account used to deploy the contract
-- tokenOwner which is potentially another account that is passed to the constructor of Token.sol. It will receive the initial supply
+The plugin `hardhat-deploy` allows you to name your accounts. Here there are 2 named accounts:
+- `deployer` will be the account used to deploy the contract.
+- `tokenOwner` which is passed to the constructor of Token.sol and which will receive the initial supply
 
 These accounts need to be setup in hardhat.config.ts
 
-Modifiy it so it looks like this :
+Modifiy it so it looks like this:
 
 ```typescript
 import {HardhatUserConfig} from 'hardhat/types';
@@ -372,7 +373,7 @@ export default config;
 
 `tokenOwner` is the second account
 
-On your terminal run `yarn hardhat deploy`. You should see the following output:
+In your terminal, run `yarn hardhat deploy`. You should see the following output:
 
 ```
 Nothing to compile
@@ -380,31 +381,32 @@ deploying "Token" (tx: 0x259d19f33819ec8d3bd994f82912aec6af1a18ec5d74303cfb28d79
 Done in 3.66s.
 ```
 
-This deployment was made in the `in-memory` hardhat network and indicate that deployment was succesful.
+Your contract was deployed to the `in-memory` Hardhat network and the output indicates that deployment was successful.
 
-We can now write tests against this contract. its name is set to be the same name as the contract name: `Token`
+We can now write tests against this contract. 
 
+Its name is set to be the same name as the contract name: `Token`
 
-But let's add comments to the deploy script above to explain each line that matters :
+First we will add comments to the deploy script above to explain each line that matters:
 
 ```typescript
-import {HardhatRuntimeEnvironment} from 'hardhat/types'; // this add the type from hardhat runtime environment
-import {DeployFunction} from 'hardhat-deploy/types'; // this add the type that a deploy function is expected to fullfil
+import {HardhatRuntimeEnvironment} from 'hardhat/types'; // This adds the type from hardhat runtime environment.
+import {DeployFunction} from 'hardhat-deploy/types'; // This adds the type that a deploy function is expected to fulfill.
 
-const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) { // the deploy function receive the hardhat runtime env as argument
-  const {deployments, getNamedAccounts} = hre; // we get the deployments and getNamedAccounts which are provided by hardhat-deploy
-  const {deploy} = deployments; // the deployments field itself contains the deploy function
+const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) { // the deploy function receives the hardhat runtime env as an argument
+  const {deployments, getNamedAccounts} = hre; // we get the deployments and getNamedAccounts which are provided by hardhat-deploy.
+  const {deploy} = deployments; // The deployments field itself contains the deploy function.
 
-  const {deployer, tokenOwner} = await getNamedAccounts(); // we fetch the accounts. These can be configured in hardhat.config.ts as explained above
+  const {deployer, tokenOwner} = await getNamedAccounts(); // Fetch the accounts. These can be configured in hardhat.config.ts as explained above.
 
-  await deploy('Token', { // this will create a deployment called 'Token'. By default it will look for an artifact with the same name. the contract option allows you to use a different artifact
-    from: deployer, // deployer will be performing the deployment transaction
-    args: [tokenOwner], // tokenOwner is the address used as the first argument to the Token contract's constructor
-    log: true, // display the address and gas used in the console (not when run in test though)
+  await deploy('Token', { // This will create a deployment called 'Token'. By default it will look for an artifact with the same name. The contract option allows you to use a different artifact.
+    from: deployer, // Deployer will be performing the deployment transaction.
+    args: [tokenOwner], // tokenOwner is the address used as the first argument to the Token contract's constructor.
+    log: true, //Ddisplay the address and gas used in the console (not when run in test though).
   });
 };
 export default func;
-func.tags = ['Token']; // this setup a tag so you can execute the script on its own (and its dependencies)
+func.tags = ['Token']; // This sets up a tag so you can execute the script on its own (and its dependencies).
 
 ```
 
@@ -412,12 +414,12 @@ func.tags = ['Token']; // this setup a tag so you can execute the script on its 
 
 # 5. Testing contracts
 
-Writing automated tests when building smart contracts is of crucial importance, as your user's money is what's at stake. For this we're going to use **Hardhat Network**, a local Ethereum network designed for development that is built-in and the default network in **Hardhat**. You don't need to setup anything to use it. In our tests we're going to use ethers.js to interact with the Ethereum contract we built in the previous section, and [Mocha](https://mochajs.org/) as our test runner.
+Writing automated tests when building smart contracts is of crucial importance, as your user's money is what's at stake. For this we're going to use **Hardhat Network**, a local Ethereum network designed for development that is built-in and acts as the default network in **Hardhat**. You don't need to set anything up to use it. In our tests we're going to use ethers.js to interact with the Ethereum contract we built in the previous section, and [Mocha](https://mochajs.org/) will be our test runner.
 
 ## Writing tests
-Create a new directory called `test` inside our project root directory and create a new file called `Token.test.ts`.
+Create a new directory called `test` in the project root directory and in that `test` directory, create a new file called `Token.test.ts`.
 
-Let's start with the code below. We'll explain it next, but for now paste this into `Token.test.ts`:
+Let's start with the code below. We'll explain it shortly, but for now just paste the following code into `Token.test.ts`:
 
 ```typescript
 import {expect} from "./chai-setup";
@@ -437,7 +439,7 @@ describe("Token contract", function() {
 
 ```
 
-We also create a file called `chai-setup.ts` in the test folder too:
+We also create a new file called `chai-setup.ts` in the test folder:
 
 ```typescript
 import chaiModule from 'chai';
@@ -447,10 +449,10 @@ export = chaiModule;
 
 ```
 
-This will use chai matchers from `chai-ethers` but also allow you to easily add more.
+This will use chai matchers from `chai-ethers` but also allows you to easily add more.
 
 
-Then on your terminal run `npx hardhat test`. You should see the following output:
+Then in your terminal run `npx hardhat test`. You should see the following output:
 
 ```
 $ npx hardhat test
@@ -462,20 +464,20 @@ $ npx hardhat test
   1 passing (663ms)
 ```
 
-This means the test passed. Let's now explain each line:
+This means the test passed sucessfully. Now Let's examine each line.
 
 ```typescript
 await deployments.fixture(["Token"]);
 ```
 
-Remember the deploy script you wrote earlier. this line allow to execute it prior to the test. It also generate a evm_snapshot automatically so if you write many test and they all refers to that fixture, behind the scene it does not deploy it again and again. Instead it revert to a previous state, speeding up yoru tests automatically
+Remember the deploy script you wrote earlier? This line allow to execute it prior to the test. It also generates an evm_snapshot automatically so if you write many tests, and they all refer to that fixture. This means that behind the scenes it does not redeploy it again and again, instead it automatically reverts to a previous state, speeding up your tests significantly!
 
 
 ```typescript
 const {tokenOwner} = await getNamedAccounts();
 ```
 
-This give you access to the tokenOwner address, the same one that was used in the deploy script.
+This gives you access to the tokenOwner address, the same address that was used in the deploy script.
 
 
 ```typescript
