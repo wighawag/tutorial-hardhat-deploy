@@ -470,7 +470,7 @@ This means the test passed sucessfully. Now Let's examine each line.
 await deployments.fixture(["Token"]);
 ```
 
-Remember the deploy script you wrote earlier? This line allow to execute it prior to the test. It also generates an evm_snapshot automatically so if you write many tests, and they all refer to that fixture. This means that behind the scenes it does not redeploy it again and again, instead it automatically reverts to a previous state, speeding up your tests significantly!
+Remember the deploy script we wrote earlier? This line allow to execute it prior to the test. It also generates an evm_snapshot automatically so if you write many tests, and they all refer to that fixture. This means that behind the scenes it does not redeploy it again and again, instead it automatically reverts to a previous state, speeding up your tests significantly!
 
 
 ```typescript
@@ -484,15 +484,14 @@ This gives you access to the tokenOwner address, the same address that was used 
 const Token = await ethers.getContract("Token");
 ```
 
-Since we already perform the deploy script, we can easily access the deployed contract via name. This is what this line does and thanks to `hardhat-deploy-ethers` plugin, you get an ethers contract ready to be invoked. If you needed that contract to be associated to a specific signer, you can pass the address as the extra argument like `const TokenAsOwner = await ethers.getContract('Token', tokenOwner);`
-
+Since we already ran the deploy script, we can easily access the deployed contract by name. This is what this line does, and thanks to `hardhat-deploy-ethers` plugin, you get an ethers contract ready to be invoked. If you needed that contract to be associated to a specific signer, you can pass the address as the extra argument like `const TokenAsOwner = await ethers.getContract('Token', tokenOwner);`
 
 
 ```typescript
 const ownerBalance = await Token.balanceOf(tokenOwner);
 ```
 
-We can call our contract methods on `Token` and use them to get the balance of the owner account by calling `balanceOf()`.
+We can call our contract methods on `Token` to get the balance of the owner account by calling `balanceOf()`.
 
 ```typescript
 const supply = await Token.totalSupply();
