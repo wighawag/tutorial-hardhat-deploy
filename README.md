@@ -26,7 +26,9 @@ sudo apt install nodejs
 
 Make sure you have `git` installed. Otherwise, follow [these instructions](https://www.atlassian.com/git/tutorials/install-git).
 
-There are multiple ways of installing Node.js on MacOS. We will be using [Node Version Manager (nvm)](http://github.com/creationix/nvm). Copy and paste these commands in a terminal:
+There are multiple ways of installing Node.js on MacOS. We will be using [Node Version Manager (nvm)](http://github.com/creationix/nvm). 
+
+Copy and paste these commands in a terminal:
 
 ```
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.35.2/install.sh | bash
@@ -38,7 +40,9 @@ npm install npm --global # Upgrade npm to the latest version
 
 ### Windows
 
-Installing Node.js on Windows requires a few manual steps. We'll install git, Node.js 12.x and npm. Download and run these:
+Installing Node.js on Windows requires a few manual steps. We'll install git, Node.js 12.x and npm. 
+
+Download and run these:
 1. [Git's installer for Windows](https://git-scm.com/download/win)
 2. `node-v12.XX.XX-x64.msi` from [here](https://nodejs.org/dist/latest-v12.x)
 
@@ -98,7 +102,7 @@ yarn add -D hardhat
 Installing **Hardhat** will install some Ethereum JavaScript dependencies, so be patient.
 :::
 
-In the same directory where you installed **Hardhat** add a `hardhat.config.ts` (we are going to use typescript and use solidity 0.7.6 compiler)
+In the same directory where you installed **Hardhat** add a `hardhat.config.ts` (we are going to use typescript and the Solidity 0.7.6 compiler)
 
 ```typescript
 import {HardhatUserConfig} from 'hardhat/types';
@@ -116,21 +120,20 @@ export default config;
 **Hardhat** is designed around the concepts of **tasks** and **plugins**. The bulk of **Hardhat**'s functionality comes from plugins, which as a developer [you're free to choose](/plugins/) the ones you want to use.
 
 ### Tasks
-Every time you're running **Hardhat** from the CLI you're running a task. e.g. `npx hardhat compile` is running the `compile` task. To see the currently available tasks in your project, run `npx hardhat`. Feel free to explore any task by running `npx hardhat help [task]`.
+Every time you run **Hardhat** from the CLI you're running a task. e.g. `npx hardhat compile` is running the `compile` task. To see the currently available tasks in your project, run `npx hardhat`. Feel free to explore any task by running `npx hardhat help [task]`.
 
 ::: tip
 You can create your own tasks. Check out the [Creating a task](/guides/create-task.md) guide.
 :::
 
 ### Plugins
-**Hardhat** is unopinionated in terms of what tools you end up using, but it does come with some built-in defaults. All of which can be overriden. Most of the time the way to use a given tool is by consuming a plugin that integrates it into **Hardhat**.
+**Hardhat** is unopinionated in terms of what tools you end up using, but it does come with some built-in defaults, all of which can be overriden. Most of the time the way to use a given tool is by consuming a plugin that integrates it into **Hardhat**.
 
-For this tutorial we are going to use the hardhat-deploy-ethers and hardhat-deploy plugin. They'll allow you to interact with Ethereum and to test your contracts. We'll explain how they're used later on. We also install ethers chai and mocha and typescript. To install them, in your project directory run:
+For this tutorial we are going to use the hardhat-deploy-ethers and hardhat-deploy plugin. They'll allow you to interact with Ethereum and to test your contracts. We'll explain how they're used later on. We also install ethers chai and mocha and typescript. To install them, run the following command in your project directory:
 
 ```
 yarn add -D hardhat-deploy hardhat-deploy-ethers ethers chai chai-ethers mocha @types/chai @types/mocha @types/node typescript ts-node dotenv
 ```
-
 
 Edit `hardhat.config.ts` so that it looks like this:
 
