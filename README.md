@@ -192,9 +192,9 @@ You might have heard about ERC20, which is a token standard in Ethereum. Tokens 
 
 ## Writing smart contracts
 
-While by default hardhat use `contracts` as the source folder, we prefers to change it to `src`.
+While by default hardhat uses `contracts` as the source folder, we prefer to change it to `src`.
 
-You thus need to edit your `hardhat.config.ts` file with the new config :
+You then need to edit your `hardhat.config.ts` file with the new config:
 
 ```typescript
 import {HardhatUserConfig} from 'hardhat/types';
