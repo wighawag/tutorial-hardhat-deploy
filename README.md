@@ -742,17 +742,17 @@ contract Token {
 }
 ```
 
-Add some `console.log` to the `transfer()` function as if you were using it in JavaScript:
+Try adding some `console.log` statments to the `transfer()` function as if you were using it in JavaScript:
 
 ```solidity {2,3}
 function transfer(address to, uint256 amount) external {
-    console.log("Sender balance is %s tokens", balances[msg.sender]);
-    console.log("Trying to send %s tokens to %s", amount, to);
+  console.log("Sender balance is %s tokens", balances[msg.sender]);
+  console.log("Trying to send %s tokens to %s", amount, to);
 
-    require(balances[msg.sender] >= amount, "Not enough tokens");
+  require(balances[msg.sender] >= amount, "Not enough tokens");
 
-    balances[msg.sender] -= amount;
-    balances[to] += amount;
+  balances[msg.sender] -= amount;
+  balances[to] += amount;
 }
 ```
 
@@ -784,15 +784,15 @@ Trying to send 100 tokens to 0xe5904695748fe4a84b40b3fc79de2277660bd1d3
 Check out the [documentation](/hardhat-network/README.md#console-log) to learn more about this feature.
 
 # 7. Deploying to a live network
-Once you're ready to share your app with other people what you may want to do is deploy to a live network. This way others can access an instance that's not running locally on your system.
+Once you're ready to share your app with other people, you may want to deploy it to a live network! This way others can access an instance that's not running locally on your system.
 
-There's the Ethereum network that deals with real money which is called "mainnet", and then there are other live networks that don't deal with real money but do mimic the real world scenario well, and can be used by others as a shared staging environment. These are called "testnets" and Ethereum has multiple ones: *Ropsten*, *Kovan*, *Rinkeby* and *Goerli*.
+The Ethereum network that deals with real money is called "mainnet", and then there are other live networks that don't deal with real money but do mimic the real world scenario well, and can be used by others as a shared staging environment. These are called "testnets" and Ethereum has several of them: *Ropsten*, *Kovan*, *Rinkeby* and *Goerli*.
 
 At the software level, deploying to a testnet is the same as deploying to mainnet. The only difference is which network you connect to.
 
-Since we use `hardhat-deploy` plugin and we already setup our deployment procedure for the test, we are already ready to deploy to a live network, except for some configuration for the network to deploy to.
+Since we use `hardhat-deploy` plugin and we already set up our deployment procedures for the tests, we are ready to deploy to a live network, we just need to addsome configuration for the network we intend to deploy to.
 
-As explained in our deployment section you can execute `yarn hardhat deploy` which will give you the following output but do not actually deploy your contract anywhere as the default network (`hardhat`) is in-memory only :
+As explained in our deployment section you can execute `yarn hardhat deploy` which will give you the following output, but does not actually deploy your contract anywhere except the default "in-memory" network (`hardhat`)
 
 ```
 Nothing to compile
@@ -800,7 +800,7 @@ deploying "Token" (tx: 0x259d19f33819ec8d3bd994f82912aec6af1a18ec5d74303cfb28d79
 Done in 3.79s.
 ```
 
-To deploy to a specific network, you need to add `--network <network-name>` like this :
+To deploy to a specific network, you need to add `--network <network-name>` like this:
 
 ```
 yarn hardhat --network <network-name> deploy
@@ -809,9 +809,9 @@ yarn hardhat --network <network-name> deploy
 ## Deploying to remote networks
 To deploy to a remote network such as mainnet or any testnet, you need to add a `network` entry to your `hardhat.config.js` file. We’ll use Rinkeby for this example, but you can add any network.
 
-To make it easier to handle the private keys and network configuration we create a new folder at the root of your project `utils`
+To make it easier to handle the private keys and network configuration, we create a new folder at the root of your project `utils`
 
-In it we create a file `network.ts` with the following content :
+In it we create a file `network.ts` with the following content:
 
 ```typescript
 import 'dotenv/config';
@@ -835,7 +835,7 @@ export function node_url(networkName: string): string {
   }
   if (uri.indexOf('{{') >= 0) {
     throw new Error(
-      `invalid uri or network not supported by nod eprovider : ${uri}`
+      `invalid uri or network not supported by node provider : ${uri}`
     );
   }
   return uri;
@@ -861,9 +861,9 @@ export function accounts(networkName?: string): {mnemonic: string} {
 }
 ```
 
-Then we can modifiy our `hardhat.config.ts` file to contains the following:
+Then we can modifiy our `hardhat.config.ts` file to contain the following:
 
-```typescript{5,11,15-20}
+```typescript {5,11,15-20}
 import {HardhatUserConfig} from 'hardhat/types';
 import 'hardhat-deploy';
 import 'hardhat-deploy-ethers';
@@ -891,9 +891,9 @@ export default config;
 
 ```
 
-Finally we need to setup the environment variable that `utils/networks.ts` read automatically from `.env`
+Finally we need to setup the environment variable that `utils/networks.ts` reads automatically from `.env`
 
-create a `.env` with the following where you write your own alchemy api key and mnemonic for rinkeby
+create a `.env` with the following content. This is where you write your own alchemy api key and mnemonic for rinkeby
 
 ```
 ETH_NODE_URI_RINKEBY=https://eth-rinkeby.alchemyapi.io/v2/<alchmey api key>
@@ -902,7 +902,7 @@ MNEMONIC_RINKEBY=<mnemonic for rinkeby>
 
 We're using [Alchemy](https://www.alchemyapi.io), but pointing `url` to any Ethereum node or gateway would work. Go grab your api key and come back.
 
-To deploy on Rinkeby you need to send rinkeby-ETH into the address that's going to be making the deployment. You can get some ETH for testnets from a faucet, a service that distributes testing-ETH for free. [Here's the one for Rinkeby](https://faucet.metamask.io/), you'll have to change Metamask's network to Rinkeby before transacting.
+To deploy on Rinkeby you need to send rinkeby-ETH into the address that's going to be making the deployment. You can get some ETH for testnets from a faucet, a service that distributes testing ETH for free. [Here's the one for Rinkeby](https://faucet.metamask.io/). You'll have to change Metamask's network to Rinkeby before transacting.
 
 ::: tip
 You can get some ETH for other testnets following these links:
@@ -917,7 +917,7 @@ Finally, run:
 yarn hardhat --network rinkeby deploy
 ```
 
-If everything went well, you should see something like that :
+If everything went well, you should see something like:
 
 ```
 Nothing to compile
@@ -926,7 +926,7 @@ deploying "Token" (tx: 0xb40879c3162e6a924cfadfc1027c4629dd57ee4ba08a5f8af575be1
 
 You will also see that some files have been created in the `deployments/rinkeby` folder.
 
-Most notably you'll see the `deployments/rinkeby/Token.json` which contains the information about your deployed contract, including the addres, abi but also the solidity input used to create it.
+Most notably you'll see `deployments/rinkeby/Token.json` which contains useful information about your deployed contract, including the address, abi, and the solidity input used to create it.
 
 You can then verify it using sourcify or etherscan.
 
