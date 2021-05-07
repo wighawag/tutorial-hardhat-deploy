@@ -705,7 +705,7 @@ describe("Token contract", function() {
 
 This is what the output of `yarn hardhat test` should look like after running the full test suite:
 
-```shell
+```
 $ yarn hardhat test
 
   Token contract
@@ -725,14 +725,14 @@ Keep in mind that when you run `yarn hardhat test`, your contracts will be compi
 
 
 # 6. Debugging with Hardhat Network
-**Hardhat** comes built-in with **Hardhat Network**, a local Ethereum network designed for development. It allows you to deploy your contracts, run your tests and debug your code. It's the default network **Hardhat** connects to, so you don't need to setup anything for it to work. Just run your tests.
+**Hardhat** comes built-in with **Hardhat Network**, a local Ethereum network designed for development. It allows you to deploy your contracts, run your tests, and debug your code. It's the default network **Hardhat** connects to, so you don't need to set anything up for it to work, you just run your tests.
 
 ## Solidity `console.log`
-When running your contracts and tests on **Hardhat Network** you can print logging messages and contract variables calling `console.log()` from your Solidity code. To use it you have to import **Hardhat**'s`console.log` from your contract code.
+When running your contracts and tests on **Hardhat Network** you can print logging messages and contract variables calling `console.log()` from your Solidity code. To use it you have to import **Hardhat**'s`console.log` in your contract code.
 
 This is what it looks like:
 
-```solidity{3}
+```solidity
 pragma solidity 0.7.6;
 
 import "hardhat/console.sol";
