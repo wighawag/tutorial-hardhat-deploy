@@ -491,28 +491,28 @@ Since we already ran the deploy script, we can easily access the deployed contra
 const ownerBalance = await Token.balanceOf(tokenOwner);
 ```
 
-We can call our contract methods on `Token` to get the balance of the owner account by calling `balanceOf()`.
+Now we can call contract methods on `Token`. To get the balance of the owner account, we can call `balanceOf()`.
 
 ```typescript
 const supply = await Token.totalSupply();
 ```
 
-Here we're again using our `Contract` instance to call a smart contract function in our Solidity code. `totalSupply()` returns the token's supply amount.
+Here we will again use our `Contract` instance to call a smart contract function. `totalSupply()` returns the token's supply amount.
 
 ```typescript
 expect(ownerBalance).to.equal(supply);
 ```
 
-Finally we're checking that it's equal to `ownerBalance`, as it should.
+Finally we're checking that it's equal to `ownerBalance`, which it should be.
 
 
-To do this we're using [Chai](https://www.chaijs.com/) which is an assertions library. These asserting functions are called "matchers", and the ones we're using here actually come from `chai-ethers` npm package (which itself is a  fork of [Waffle chai matchers](https://getwaffle.io/) without unecessary dependencies).
+To do this we're using [Chai](https://www.chaijs.com/) which is an assertions library. These assertion functions are called "matchers", and the ones we're using here actually come from `chai-ethers` npm package (which itself is a fork of [Waffle chai matchers](https://getwaffle.io/) without unecessary dependencies).
 
 ### Using a different account
 
-If you need to send a transaction from an account other than the default one to test your code, you can use the second argument of `getContract` :
+ While testing your code, you may need to send a transaction from an account other than the default one. To do this you can use the second argument to `getContract` :
 
-```typescript{18}
+```typescript
 import {expect} from "./chai-setup";
 
 import {ethers, deployments, getNamedAccounts, getUnnamedAccounts} from 'hardhat';
