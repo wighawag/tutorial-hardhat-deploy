@@ -26,7 +26,7 @@ sudo apt install nodejs
 
 Make sure you have `git` installed. Otherwise, follow [these instructions](https://www.atlassian.com/git/tutorials/install-git).
 
-There are multiple ways of installing Node.js on MacOS. We will be using [Node Version Manager (nvm)](http://github.com/creationix/nvm). 
+There are multiple ways of installing Node.js on MacOS. We will be using [Node Version Manager (nvm)](http://github.com/creationix/nvm).
 
 Copy and paste these commands in a terminal:
 
@@ -40,7 +40,7 @@ npm install npm --global # Upgrade npm to the latest version
 
 ### Windows
 
-Installing Node.js on Windows requires a few manual steps. We'll install git, Node.js 12.x and npm. 
+Installing Node.js on Windows requires a few manual steps. We'll install git, Node.js 12.x and npm.
 
 Download and run these:
 1. [Git's installer for Windows](https://git-scm.com/download/win)
@@ -129,7 +129,7 @@ You can create your own tasks. Check out the [Creating a task](/guides/create-ta
 ### Plugins
 **Hardhat** is unopinionated in terms of what tools you end up using, but it does come with some built-in defaults, all of which can be overriden. Most of the time the way to use a given tool is by consuming a plugin that integrates it into **Hardhat**.
 
-For this tutorial we are going to use the hardhat-deploy-ethers and hardhat-deploy plugin. They'll allow you to interact with Ethereum and to test your contracts. We'll explain how they're used later on. We also install ethers chai and mocha and typescript. To install them, run the following command in your project directory:
+For this tutorial we are going to use the `hardhat-deploy` and `hardhat-deploy-ethers` plugins. They'll allow you to interact with Ethereum and to test your contracts. We'll explain how they're used later on. We also install `ethers`, `chai`, `mocha` and `typescript` and extra dependencies. To install them, run the following command in your project directory:
 
 ```
 yarn add -D hardhat-deploy hardhat-deploy-ethers ethers chai chai-ethers mocha @types/chai @types/mocha @types/node typescript ts-node dotenv
@@ -310,7 +310,7 @@ The contract has been successfully compiled and is ready to be used.
 Before you will be able to test or deploy your contract, you must set up the deployment process that can then be used both in testing as well as deployment to various live networks.
 This allow you to focus on what the contracts will be in their final form, setup their parameters and dependencies, and ensure your tests are running against the exact code that will be deployed.
 
-This also removes the need to duplicate the deployment procedures.
+This also removes the need to duplicate the deployment procedures. This is made possible thanks to the `hardhat-deploy` plugin.
 
 ## Writing deployment scripts
 Create a new directory called `deploy` in the project root, and in that directory create a new file called `001_deploy_token.ts`.
@@ -338,11 +338,11 @@ func.tags = ['Token'];
 
 ```
 
-Notice the mentione of `getNamedAccounts`?
+Notice the mention of `getNamedAccounts`?
 
 The plugin `hardhat-deploy` allows you to name your accounts. Here there are 2 named accounts:
 - `deployer` will be the account used to deploy the contract.
-- `tokenOwner` which is passed to the constructor of Token.sol and which will receive the initial supply
+- `tokenOwner` which is passed to the constructor of Token.sol and which will receive the initial supply.
 
 These accounts need to be setup in hardhat.config.ts
 
@@ -369,9 +369,11 @@ export default config;
 
 ```
 
-`deployer` was already there and is setup to use the first account (index = 0)
+`deployer` was already there and is setup to use the first account (index = 0).
 
-`tokenOwner` is the second account
+`tokenOwner` is the second account.
+
+Note that instead of index you can use hard-coded addresses or even references other named accounts. You can also have different addresses based on each network. See `hardhat-deploy` documentation [here](https://github.com/wighawag/hardhat-deploy#1-namedaccounts-ability-to-name-addresses)
 
 In your terminal, run `yarn hardhat deploy`. You should see the following output:
 
@@ -383,9 +385,7 @@ Done in 3.66s.
 
 Your contract was deployed to the `in-memory` Hardhat network and the output indicates that deployment was successful.
 
-We can now write tests against this contract. 
-
-Its name is set to be the same name as the contract name: `Token`
+We can now write tests against this contract.
 
 First we will add comments to the deploy script above to explain each line that matters:
 
@@ -399,7 +399,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) { /
 
   const {deployer, tokenOwner} = await getNamedAccounts(); // Fetch the accounts. These can be configured in hardhat.config.ts as explained above.
 
-  await deploy('Token', { // This will create a deployment called 'Token'. By default it will look for an artifact with the same name. The contract option allows you to use a different artifact.
+  await deploy('Token', { // This will create a deployment called 'Token'. By default it will look for an artifact with the same name. The 'contract' option allows you to use a different artifact.
     from: deployer, // Deployer will be performing the deployment transaction.
     args: [tokenOwner], // tokenOwner is the address used as the first argument to the Token contract's constructor.
     log: true, //Ddisplay the address and gas used in the console (not when run in test though).
@@ -411,6 +411,17 @@ func.tags = ['Token']; // This sets up a tag so you can execute the script on it
 ```
 
 
+Not as mentioned in the comment, the name of the deployed contract is set to be the same name as the contract name: `Token`. You can deploy different version of it by simply using a different name for it, like so:
+
+
+```typescript
+await deploy('MyToken_1', { // name of the deployed contract
+  contract: 'Token', // name of the token source
+  from: deployer,
+  args: [tokenOwner],
+  log: true,
+});
+```
 
 # 5. Testing contracts
 
@@ -470,7 +481,7 @@ This means the test passed sucessfully. Now Let's examine each line.
 await deployments.fixture(["Token"]);
 ```
 
-Remember the deploy script we wrote earlier? This line allow to execute it prior to the test. It also generates an evm_snapshot automatically so if you write many tests, and they all refer to that fixture. This means that behind the scenes it does not redeploy it again and again, instead it automatically reverts to a previous state, speeding up your tests significantly!
+Remember the deploy script we wrote earlier? This line allow to execute it prior to the test. It also generates an evm_snapshot automatically so if you write many tests, and they all refer to that fixture, the deployment will not be reexecuted. Indeed, behind the scene it does not redeploy it again and again, instead it automatically reverts to a previous state, speeding up your tests significantly!
 
 
 ```typescript
@@ -597,8 +608,8 @@ async function setup () {
 
   // we get the tokenOwner
   const {tokenOwner} = await getNamedAccounts();
-  
-  // Get the unnammedAccounts (which are basically all accounts not named in the config, 
+
+  // Get the unnammedAccounts (which are basically all accounts not named in the config,
   // This is useful for tests as you can be sure they have noy been given tokens for example)
   // We then use the utilities function to generate user objects
   // These object allow you to write things like `users[0].Token.transfer(....)`
@@ -790,7 +801,7 @@ The Ethereum network that deals with real money is called "mainnet", and then th
 
 At the software level, deploying to a testnet is the same as deploying to mainnet. The only difference is which network you connect to.
 
-Since we use `hardhat-deploy` plugin and we already set up our deployment procedures for the tests, we are ready to deploy to a live network, we just need to addsome configuration for the network we intend to deploy to.
+Since we use `hardhat-deploy` plugin and we already set up our deployment procedures for the tests, we are ready to deploy to a live network, we just need to add some configuration for the network we intend to deploy to.
 
 As explained in our deployment section you can execute `yarn hardhat deploy` which will give you the following output, but does not actually deploy your contract anywhere except the default "in-memory" network (`hardhat`)
 
