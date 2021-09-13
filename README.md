@@ -402,7 +402,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) { /
   await deploy('Token', { // This will create a deployment called 'Token'. By default it will look for an artifact with the same name. The 'contract' option allows you to use a different artifact.
     from: deployer, // Deployer will be performing the deployment transaction.
     args: [tokenOwner], // tokenOwner is the address used as the first argument to the Token contract's constructor.
-    log: true, //Ddisplay the address and gas used in the console (not when run in test though).
+    log: true, // Display the address and gas used in the console (not when run in test though).
   });
 };
 export default func;
