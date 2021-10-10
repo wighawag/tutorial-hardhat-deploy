@@ -12,7 +12,7 @@ async function setup () {
   // it first ensure the deployment is executed and reset (use of evm_snaphost for fast test)
   await deployments.fixture(["Token"]);
 
-  // we get an instantiated contract in teh form of a ethers.js Contract instance:
+  // we get an instantiated contract in the form of a ethers.js Contract instance:
   const contracts = {
     Token: (await ethers.getContract('Token')),
   };
@@ -52,7 +52,7 @@ describe("Token contract", function() {
 
       // before the test, we call the fixture function.
       // while mocha have hooks to perform these automatically, they force you to declare the variable in greater scope which can introduce subttle errors
-      // as such we prefers to have the setup called right at the beginning of the test. this also allow yout o name it accordingly for easier to read tests.
+      // as such we prefers to have the setup called right at the beginning of the test. this also allow you to name it accordingly for easier to read tests.
       const {Token} = await setup();
 
 
