@@ -428,9 +428,9 @@ await deploy('MyToken_1', { // name of the deployed contract
 Writing automated tests when building smart contracts is of crucial importance, as your user's money is what's at stake. For this we're going to use **Hardhat Network**, a local Ethereum network designed for development that is built-in and acts as the default network in **Hardhat**. You don't need to set anything up to use it. In our tests we're going to use ethers.js to interact with the Ethereum contract we built in the previous section, and [Mocha](https://mochajs.org/) will be our test runner.
 
 ## Writing tests
-Create a new directory called `test` in the project root directory and in that `test` directory, create a new file called `Token.test.ts`.
+Create a new directory called `test` in the project root directory and in that `test` directory, create a new file called `Test.test.ts`.
 
-Let's start with the code below. We'll explain it shortly, but for now just paste the following code into `Token.test.ts`:
+Let's start with the code below. We'll explain it shortly, but for now just paste the following code into `Test.test.ts`:
 
 ```typescript
 import {expect} from "./chai-setup";
@@ -551,7 +551,7 @@ Now that we've covered the basics you'll need for testing your contracts, here's
 
 But first we add some utility functions that we will use in the test suite.
 
-Create a folder called `utils` in the `test` folder and it it, create a file called `index.ts` with the following content:
+Create a folder called `utils` in the `test` folder and inside it, create a file called `index.ts` with the following content:
 
 ```typescript
 import {Contract} from 'ethers';
